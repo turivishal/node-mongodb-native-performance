@@ -5,7 +5,7 @@ Test difference versions of node-mongodb-native driver
 ```
 const { MongoClient } = require("mongodb");
 
-// Replace Your Connection URI
+// Replace Connection URI
 const uri = "mongodb://localhost:27017/?maxPoolSize=20&w=majority";
 
 // Create a new MongoClient
@@ -13,7 +13,7 @@ const client = new MongoClient(uri);
 
 async function run() {
   try {
-    
+
     console.log("mongodb-npm-4.3.0");
     console.log("=================");
 
@@ -23,10 +23,11 @@ async function run() {
 
     console.time("find");
     // Replace Database name and Collection name
-    let c = await client.db("db_name").collection("coll_name").find().explain("executionStats");
+    let _find = await client.db("db_name").collection("coll_name").find();
     console.timeEnd("find");
 
-    console.log("explain.executionTimeMillis: ", c.executionStats.executionTimeMillis);
+    let _findExplain = await _find.explain("executionStats");
+    console.log("explain.executionTimeMillis: ", _findExplain.executionStats.executionTimeMillis);
 
   } finally {
     // Ensures that the client will close when you finish/error
